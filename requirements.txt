@@ -8,3 +8,4 @@ ipython==8.8.0
 pep8-naming==0.13.3
 python-dotenv~=0.21.1
 Faker~=16.6.1
+webargs~=8.2.0

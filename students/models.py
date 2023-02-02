@@ -4,7 +4,7 @@ import datetime
 
 from faker import Faker
 
-from students.validators import validate_email_domain, validate_unique_email
+from students.validators import ValidateEmailDomain, validate_unique_email
 
 VALID_DOMAINS = ('gmail.com', 'yahoo.com', 'email.com')
 
@@ -14,7 +14,8 @@ class Student(models.Model):
     last_name = models.CharField(max_length=50)
     birthday = models.DateField(default=datetime.date.today)
     city = models.CharField(max_length=25, null=True, blank=True)
-    email = models.EmailField(validators=[validate_email_domain, validate_unique_email])
+    email = models.EmailField(validators=[ValidateEmailDomain(*VALID_DOMAINS), validate_unique_email])
+    phone = models.CharField(max_length=19)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -33,4 +34,5 @@ class Student(models.Model):
             st.last_name = f.last_name()
             st.email = f'{st.first_name}.{st.last_name}@{f.random.choice(VALID_DOMAINS)}'
             st.birthday = f.date_between(start_date='-70y', end_date='-18y')
+            st.phone = f.numerify(text='+## (###) ###-##-##')
             st.save()
