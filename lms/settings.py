@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django_extensions',
 
     'students.apps.StudentsConfig',
-    'groups.apps.GroupsConfig'
+    'groups.apps.GroupsConfig',
+    'teachers.apps.TeachersConfig'
 ]
 
 MIDDLEWARE = [
@@ -61,7 +62,7 @@ ROOT_URLCONF = 'lms.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
