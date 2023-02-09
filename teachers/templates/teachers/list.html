@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LMS - {{ title }}</title>
+</head>
+<body>
+{#    <a href="/teachers/create/">Create teacher</a>#}
+    <br><br>
+    <table>
+        <thead>
+            <tr>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Birthday</th>
+                <th>Salary</th>
+                <th>Update</th>
+            </tr>
+        <thead>
+        <tbody>
+        {% for tr in teachers %}
+            <tr>
+                <td><a href="/teachers/detail/{{ tr.pk }}/">{{ tr.first_name }}</a></td>
+                <td>{{ tr.last_name }}</td>
+                <td>{{ tr.birthday }}</td>
+                <td>{{ tr.salary }}</td>
+                <td><a href="/teachers/update/{{ tr.pk }}/">Edit</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

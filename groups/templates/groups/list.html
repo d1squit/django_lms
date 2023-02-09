@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LMS - {{ title }}</title>
+</head>
+<body>
+{#    <a href="/groups/create/">Create group</a>#}
+    <br><br>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Start</th>
+                <th>Description</th>
+                <th>Update</th>
+            </tr>
+        <thead>
+        <tbody>
+        {% for gr in groups %}
+            <tr>
+                <td><a href="/groups/detail/{{ gr.pk }}/">{{ gr.name }}</a></td>
+                <td>{{ gr.start }}</td>
+                <td>{{ gr.description }}</td>
+                <td><a href="/groups/update/{{ gr.pk }}/">Edit</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

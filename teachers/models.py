@@ -1,18 +1,23 @@
+from django.core.validators import MinLengthValidator
 from django.db import models
+import datetime
+
 from faker import Faker
 
-from groups.validators import validate_start_date
 
-
-class Group(models.Model):
-    name = models.CharField(max_length=20)
-    start = models.DateField(validators=[validate_start_date])
-    description = models.CharField(max_length=100, default='', blank=True)
+class Teacher(models.Model):
+    first_name = models.CharField(max_length=50, validators=[MinLengthValidator(3)])
+    last_name = models.CharField(max_length=50)
+    birthday = models.DateField(default=datetime.date.today)
+    salary = models.IntegerField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        db_table = 'groups'
+        db_table = 'teachers'
+
+    def __str__(self):
+        return f'{self.first_name} {self.last_name}'
 
     @classmethod
     def generate_fake_data(cls, amount):
