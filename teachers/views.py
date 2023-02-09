@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.middleware.csrf import get_token
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
 
 from teachers.forms import UpdateTeacherForm
 from teachers.models import Teacher
@@ -12,12 +13,12 @@ def get_teachers(request):
 
 
 def detail_teacher(request, pk):
-    teacher = Teacher.objects.get(pk=pk)
+    teacher = get_object_or_404(Teacher, pk=pk)
     return render(request=request, template_name='teachers/detail.html', context={'title': 'Detail of teacher', 'teacher': teacher})
 
 
 def update_teacher(request, pk):
-    teacher = Teacher.objects.get(pk=pk)
+    teacher = get_object_or_404(Teacher, pk=pk)
 
     if request.method == 'GET':
         form = UpdateTeacherForm(instance=teacher)
@@ -25,18 +26,6 @@ def update_teacher(request, pk):
         form = UpdateTeacherForm(request.POST, instance=teacher)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/teachers/')
+            return HttpResponseRedirect(reverse('teachers:list'))
 
-    token = get_token(request)
-    html_form = f'''
-        <form method="post">
-        <input type="hidden" name="csrfmiddlewaretoken" value="{token}">
-            <table>
-                {form.as_table()}
-            </table>
-            <input type="submit" value="Submit">
-            <a href="/teachers/">Back to list</a>
-        </form>
-        '''
-
-    return HttpResponse(html_form)
+    return render(request, 'teachers/update.html', {'form': form})

@@ -1,10 +1,8 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>LMS - {{ title }}</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}List of groups{% endblock %}
+
+{% block content %}
 {#    <a href="/groups/create/">Create group</a>#}
     <br><br>
     <table>
@@ -19,13 +17,12 @@
         <tbody>
         {% for gr in groups %}
             <tr>
-                <td><a href="/groups/detail/{{ gr.pk }}/">{{ gr.name }}</a></td>
+                <td><a href="{% url 'groups:detail' gr.pk %}">{{ gr.name }}</a></td>
                 <td>{{ gr.start }}</td>
                 <td>{{ gr.description }}</td>
-                <td><a href="/groups/update/{{ gr.pk }}/">Edit</a></td>
+                <td><a href="{% url 'groups:update' gr.pk %}">Edit</a></td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-</body>
-</html>
+{% endblock %}
