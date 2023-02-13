@@ -1,6 +1,5 @@
 from django.db.models import Q
-from django.http import HttpResponse, HttpResponseRedirect
-from django.middleware.csrf import get_token
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
@@ -13,18 +12,20 @@ from .models import Student
 
 @use_args(
     {
-        'first_name': Str(required=False),
-        'last_name': Str(required=False)
+        'search': Str(required=False)
     },
     location='query'
 )
 def get_students(request, args):
     students = Student.objects.all().order_by('birthday')
 
-    if len(args) and (args.get('first_name') or args.get('last_name')):
+    if len(args) and args.get('search'):
         students = students.filter(
-            Q(first_name__icontains=args.get('first_name', '')) &
-            Q(last_name__icontains=args.get('last_name', ''))
+            Q(first_name__icontains=args.get('search', '')) |
+            Q(last_name__icontains=args.get('search', '')) |
+            Q(email__icontains=args.get('search', '')) |
+            Q(birthday__icontains=args.get('search', '')) |
+            Q(phone__icontains=args.get('search', ''))
         )
 
     return render(request=request, template_name='students/list.html', context={'title': 'List of Students', 'students': students})
