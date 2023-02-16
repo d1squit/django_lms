@@ -14,13 +14,14 @@ class Group(models.Model):
     class Meta:
         db_table = 'groups'
 
+    def __str__(self):
+        return f'Group name: {self.name}'
+
     @classmethod
     def generate_fake_data(cls, amount):
         f = Faker()
         for _ in range(amount):
-            st = cls()
-            st.first_name = f.first_name()
-            st.last_name = f.last_name()
-            st.birthday = f.date_between(start_date='-70y', end_date='-18y')
-            st.salary = f.random.randint(800, 4000)
-            st.save()
+            gr = cls()
+            gr.name = f.word()
+            gr.start = f.date_between(start_date='+1d', end_date='+40d')
+            gr.save()

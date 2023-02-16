@@ -5,6 +5,7 @@ import datetime
 
 from faker import Faker
 
+from groups.models import Group
 from students.validators import ValidateEmailDomain, validate_unique_email
 
 VALID_DOMAINS = ('gmail.com', 'yahoo.com', 'email.com')
@@ -12,11 +13,12 @@ VALID_DOMAINS = ('gmail.com', 'yahoo.com', 'email.com')
 
 class Student(models.Model):
     first_name = models.CharField(max_length=50, validators=[MinLengthValidator(3)])
-    last_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50, validators=[MinLengthValidator(3)])
     birthday = models.DateField(default=datetime.date.today)
     city = models.CharField(max_length=25, null=True, blank=True)
     email = models.EmailField(validators=[ValidateEmailDomain(*VALID_DOMAINS), validate_unique_email])
     phone = models.CharField(max_length=19)
+    group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, related_name='students')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -39,4 +41,5 @@ class Student(models.Model):
             st.email = f'{st.first_name}.{st.last_name}@{f.random.choice(VALID_DOMAINS)}'
             st.birthday = f.date_between(start_date='-70y', end_date='-18y')
             st.phone = f.numerify(text='+## (###) ###-##-##')
+            st.group = f.random.choice(Group.objects.all())
             st.save()
