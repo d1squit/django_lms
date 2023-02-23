@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}List of courses{% endblock %}
+
+{% block content %}
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Group</th>
+                <th class="text-center"><i class="bi bi-pencil-fill"></i></th>
+                <th class="text-center"><i class="bi bi-trash3-fill"></i></th>
+            </tr>
+        <thead>
+        <tbody>
+        {% for co in courses %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td><a href="{% url 'courses:detail' co.pk %}">{{ co.name }}</a></td>
+                <td>{{ co.price }}</td>
+                <td>{{ co.course_group.name }}</td>
+                <td class="text-center" id="col-edit"><a class="btn btn-outline-primary btn-sm" href="{% url 'courses:update' co.pk %}">Edit</a></td>
+                <td class="text-center" id="col-del"><a class="btn btn-outline-danger btn-sm" href="{% url 'courses:delete' co.pk %}">Remove</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

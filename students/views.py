@@ -1,7 +1,8 @@
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
+from django.views.generic import UpdateView
 
 from webargs.djangoparser import use_args
 from webargs.fields import Str
@@ -17,7 +18,7 @@ from .models import Student
     location='query'
 )
 def get_students(request, args):
-    students = Student.objects.all().order_by('birthday')
+    students = Student.objects.all().order_by('birthday').select_related('group')
 
     filter_form = StudentFilterForm(data=request.GET, queryset=students)
 
@@ -39,29 +40,21 @@ def detail_student(request, pk):
 
 
 def create_student(request):
-    if request.method == 'GET':
-        form = CreateStudentForm()
-    elif request.method == 'POST':
+    if request.method == 'POST':
         form = CreateStudentForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('students:list'))
 
+    form = CreateStudentForm()
     return render(request, 'students/create.html', {'form': form})
 
 
-def update_student(request, pk):
-    student = get_object_or_404(Student, pk=pk)
-
-    if request.method == 'GET':
-        form = UpdateStudentForm(instance=student)
-    elif request.method == 'POST':
-        form = UpdateStudentForm(request.POST, instance=student)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('students:list'))
-
-    return render(request, 'students/update.html', {'form': form})
+class UpdateStudentView(UpdateView):
+    model = Student
+    form_class = UpdateStudentForm
+    success_url = reverse_lazy('students:list')
+    template_name = 'students/update.html'
 
 
 def delete_student(request, pk):

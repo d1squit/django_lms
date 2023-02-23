@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Delete teacher {{ teacher.first_name }} {{ teacher.last_name }}{% endblock %}
+{% block title %}Delete course {{ course.name }}{% endblock %}
 
 {% block content %}
     <div class="row">
@@ -9,9 +9,9 @@
             <form method="post">
                 {% csrf_token %}
                 <div class="text-center">
-                    <p>Do you really want to remove teacher <strong>"{{ teacher.first_name }} {{ teacher.last_name }}"</strong></p>
+                    <p>Do you really want to remove course <strong>"{{ course.name }}"</strong></p>
                     <input type="submit" value="Agree" class="btn btn-outline-primary">
-                    <a href="{% url 'teachers:list' %}" class="btn btn-outline-primary">Back to list</a>
+                    <a href="{% url 'courses:list' %}" class="btn btn-outline-primary">Back to list</a>
                 </div>
             </form>
         </div>

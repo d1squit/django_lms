@@ -1,15 +1,19 @@
 from django.db import models
 from faker import Faker
 
+from core.models import BaseModel
 from groups.validators import validate_start_date
+from teachers.models import Teacher
 
 
-class Group(models.Model):
+class Group(BaseModel):
     name = models.CharField(max_length=20)
     start = models.DateField(validators=[validate_start_date])
+    end = models.DateField()
     description = models.CharField(max_length=100, default='', blank=True)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    headman = models.OneToOneField('students.Student', on_delete=models.SET_NULL, null=True, blank=True, related_name='headman_group')
+    teachers = models.ManyToManyField(to=Teacher, blank=True, related_name='groups')
+    course = models.OneToOneField('courses.Course', on_delete=models.SET_NULL, null=True, blank=True, related_name='course_group')
 
     class Meta:
         db_table = 'groups'
@@ -24,4 +28,5 @@ class Group(models.Model):
             gr = cls()
             gr.name = f.word()
             gr.start = f.date_between(start_date='+1d', end_date='+40d')
+            gr.end = f.date_between(start_date='+60d', end_date='+100d')
             gr.save()
