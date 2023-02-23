@@ -23,9 +23,9 @@ class Teacher(models.Model):
     def generate_fake_data(cls, amount):
         f = Faker()
         for _ in range(amount):
-            st = cls()
-            st.first_name = f.first_name()
-            st.last_name = f.last_name()
-            st.birthday = f.date_between(start_date='-70y', end_date='-18y')
-            st.salary = f.random.randint(800, 4000)
-            st.save()
+            tr = cls()
+            tr.first_name = f.first_name()
+            tr.last_name = f.last_name()
+            tr.birthday = f.date_between(start_date='-70y', end_date='-18y')
+            tr.salary = f.random.randint(800, 4000)
+            tr.save()

@@ -6,7 +6,7 @@ from django.urls import reverse
 from webargs.djangoparser import use_args
 from webargs.fields import Str
 
-from .forms import CreateStudentForm, UpdateStudentForm
+from .forms import CreateStudentForm, UpdateStudentForm, StudentFilterForm
 from .models import Student
 
 
@@ -19,16 +19,18 @@ from .models import Student
 def get_students(request, args):
     students = Student.objects.all().order_by('birthday')
 
-    if len(args) and args.get('search'):
-        students = students.filter(
-            Q(first_name__icontains=args.get('search', '')) |
-            Q(last_name__icontains=args.get('search', '')) |
-            Q(email__icontains=args.get('search', '')) |
-            Q(birthday__icontains=args.get('search', '')) |
-            Q(phone__icontains=args.get('search', ''))
-        )
+    filter_form = StudentFilterForm(data=request.GET, queryset=students)
 
-    return render(request=request, template_name='students/list.html', context={'title': 'List of Students', 'students': students})
+    # if len(args) and args.get('search'):
+    #     students = students.filter(
+    #         Q(first_name__icontains=args.get('search', '')) |
+    #         Q(last_name__icontains=args.get('search', '')) |
+    #         Q(email__icontains=args.get('search', '')) |
+    #         Q(birthday__icontains=args.get('search', '')) |
+    #         Q(phone__icontains=args.get('search', ''))
+    #     )
+
+    return render(request=request, template_name='students/list.html', context={'filter_form': filter_form})
 
 
 def detail_student(request, pk):
