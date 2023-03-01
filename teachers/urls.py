@@ -6,9 +6,9 @@ from teachers.views import *
 app_name = 'teachers'
 
 urlpatterns = [
-    path('', get_teachers, name='list'),
-    path('create/', create_teacher, name='create'),
-    path('update/<int:pk>/', update_teacher, name='update'),
-    path('detail/<int:pk>/', detail_teacher, name='detail'),
-    path('delete/<int:pk>/', delete_teacher, name='delete')
+    path('', ListTeacherView.as_view(), name='list'),
+    path('create/', CreateTeacherView.as_view(), name='create'),
+    path('update/<int:pk>/', UpdateTeacherView.as_view(), name='update'),
+    path('detail/<int:pk>/', DetailTeacherView.as_view(), name='detail'),
+    path('delete/<int:pk>/', DeleteTeacherView.as_view(), name='delete')
 ]

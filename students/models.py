@@ -15,7 +15,7 @@ VALID_DOMAINS = ('gmail.com', 'yahoo.com', 'email.com')
 
 
 class Student(PersonModel):
-    group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, related_name='students')
+    group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, blank=True, related_name='students')
 
     class Meta:
         db_table = 'students'
