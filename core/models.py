@@ -1,5 +1,6 @@
 import datetime
 
+from dateutil.relativedelta import relativedelta
 from django.db import models
 from faker import Faker
 
@@ -23,6 +24,9 @@ class PersonModel(BaseModel):
     city = models.CharField(max_length=25, null=True, blank=True)
     email = models.EmailField(validators=[ValidateEmailDomain(*domain)])
     phone = models.CharField(max_length=19)
+
+    def get_age(self):
+        return relativedelta(datetime.date.today(), self.birthday).years
 
     class Meta:
         abstract = True

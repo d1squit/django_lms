@@ -23,9 +23,6 @@ class Student(PersonModel):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
-    def get_age(self):
-        return relativedelta(datetime.date.today(), self.birthday).years
-
     @classmethod
     def _generate(cls):
         groups = Group.objects.all()
